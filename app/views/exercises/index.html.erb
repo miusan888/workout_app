@@ -1,0 +1,121 @@
+<div style="max-width: 700px; margin: auto; font-family: sans-serif;">
+
+  <div style="text-align: right; margin-bottom: 10px;">
+    <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { data: { turbo: false } } %>
+  </div>
+
+  <h1>🏃‍♀️ 今日の運動記録</h1>
+
+  <%= form_with model: @exercise, local: true do |f| %>
+    <div>
+      <%= f.label :name, "運動名" %><br>
+      <%= f.text_field :name %>
+    </div>
+
+    <div>
+      <%= f.label :duration, "時間（分）" %><br>
+      <%= f.number_field :duration %>
+    </div>
+
+    <div>
+      <%= f.label :exercised_on, "日付" %><br>
+      <%= f.date_field :exercised_on, value: Date.today %>
+    </div>
+
+    <div style="margin-top: 10px;">
+      <%= f.submit "記録する" %>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <hr>
+
+<h2>📋 記録一覧（日付ごと）</h2>
+
+<% @exercises.group_by(&:exercised_on).each do |date, exercises| %>
+  <% total_minutes = exercises.sum(&:duration) %>
+
+  <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
+    <h3 style="cursor: pointer;" onclick="toggleDay('<%= date %>')">
+      📅 <%= date %>　
+      🕒 合計: <%= total_minutes %> 分
+      <span id="icon-<%= date %>">▼</span>
+    </h3>
+
+    <div id="day-<%= date %>">
+      <table border="1" cellpadding="5" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>運動名</th>
+            <th>時間（分）</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% exercises.each do |exercise| %>
+            <tr>
+              <td><%= exercise.name %></td>
+              <td><%= exercise.duration %></td>
+              <td>
+                <%= link_to "編集", edit_exercise_path(exercise) %> |
+                <%= link_to "削除", exercise_path(exercise), method: :delete, data: { confirm: "削除しますか？" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<h2>📊 週間運動時間</h2>
+
+<canvas id="exerciseChart" width="400" height="200"></canvas>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const ctx = document.getElementById("exerciseChart");
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: <%= raw @graph_labels.to_json %>,
+        datasets: [{
+          label: "運動時間（分）",
+          data: <%= raw @graph_data.to_json %>,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  });
+</script>
+
+
+<script>
+  function toggleDay(date) {
+    const content = document.getElementById(`day-${date}`);
+    const icon = document.getElementById(`icon-${date}`);
+    if (content.style.display === "none") {
+      content.style.display = "block";
+      icon.textContent = "▼";
+    } else {
+      content.style.display = "none";
+      icon.textContent = "▶";
+    }
+  }
+</script>
+
+
+    </tbody>
+  </table>
+
+</div>

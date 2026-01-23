@@ -1,0 +1,22 @@
+<h1>✏️ 運動記録の編集</h1>
+
+<%= form_with model: @exercise, local: true do |f| %>
+  <div>
+    <%= f.label :name, "運動名" %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :duration, "時間（分）" %><br>
+    <%= f.number_field :duration %>
+  </div>
+
+  <div>
+    <%= f.label :exercised_on, "日付" %><br>
+    <%= f.date_field :exercised_on %>
+  </div>
+
+  <%= f.submit "更新する" %>
+<% end %>
+
+<%= link_to "戻る", exercises_path %>
