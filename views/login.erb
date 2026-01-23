@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン - ゆる運動ログ</title>
+    <style>
+        body { background: #fffaf0; color: #5d5d5d; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .box { max-width: 300px; margin: auto; background: white; padding: 20px; border-radius: 20px; border: 3px solid #ffcfd2; }
+        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; }
+        button { background: #b2e2f2; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .error { color: red; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🌸 はじめる 🌸</h1>
+        <% if @error %><p class="error"><%= @error %></p><% end %>
+        
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="ユーザー名" required>
+            <input type="password" name="password" placeholder="パスワード" required>
+            <button type="submit">ログイン</button>
+        </form>
+        <hr style="border: 1px dashed #ffcfd2; margin: 20px 0;">
+        <p style="font-size: 12px;">はじめての人はこちら</p>
+        <form action="/signup" method="post">
+            <input type="text" name="username" placeholder="新しいユーザー名" required>
+            <input type="password" name="password" placeholder="パスワード" required>
+            <button type="submit" style="background: #ffcfd2;">新規登録</button>
+        </form>
+    </div>
+</body>
+</html>

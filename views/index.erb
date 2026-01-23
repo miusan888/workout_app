@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ホーム - ゆる運動ログ</title>
+    <style>
+        body { background: #fffaf0; color: #5d5d5d; font-family: sans-serif; text-align: center; }
+        .nav { text-align: right; padding: 10px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 20px; border: 3px solid #ffcfd2; }
+        h1 { color: #ff9a9e; }
+        .input-area { background: #fff5f5; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+        input, button { padding: 10px; border-radius: 10px; border: 1px solid #ddd; margin: 5px; }
+        button { background: #b2e2f2; border: none; font-weight: bold; }
+        .record { text-align: left; padding: 10px; border-bottom: 1px dashed #eee; }
+        .tab-menu { margin: 20px 0; color: #ccc; } /* 今後用 */
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="/logout">ログアウト</a></div>
+    <div class="container">
+        <h1>🌸 今日の運動 🌸</h1>
+        
+        <div class="input-area">
+            <form action="/add" method="post">
+                <input type="text" name="name" placeholder="何した？" required>
+                <input type="number" name="duration" placeholder="分" style="width: 60px;" required>
+                <button type="submit">記録！</button>
+            </form>
+        </div>
+
+        <div class="tab-menu">
+            <b>【 記録 】</b> | グラフ(準備中) | カレンダー(準備中)
+        </div>
+
+        <h3>これまでのログ</h3>
+        <% @workouts.each do |w| %>
+            <div class="record">
+                <small><%= w['date'] %></small><br>
+                <b><%= w['name'] %></b> : <%= w['duration'] %>分
+            </div>
+        <% end %>
+    </div>
+</body>
+</html>
